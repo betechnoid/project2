@@ -1,6 +1,6 @@
 const InterModel = require("../models/internModel")
 
-const  createintern= async function(req,res){
+const  createIntern= async function(req,res){
     try{
     const data= req.body
     const interndata= await InterModel.create(data)
@@ -12,4 +12,4 @@ const  createintern= async function(req,res){
 
    }
 }
-module.exports.createintern=createintern
+module.exports.createIntern=createIntern
