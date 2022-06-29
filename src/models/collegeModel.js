@@ -10,9 +10,9 @@ const collegeSchema = new mongoose.Schema({
         type:String,  
         required: true
     },
-    logoLink:{
-        type:String,
-        required:true
+    logoLink: {
+        type: String,
+        required: true
     },
     isDeleted: {
         type: Boolean,
