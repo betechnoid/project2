@@ -1,43 +1,72 @@
-const collegeModel = require("../models/collegeModel")
+const collegeModel = require("../models/collegeModel");
+
+// const isValid = function (value) {
+//   if (typeof value !== "undefined" || value !== null) return true;
+//   if (typeof value === "string" && value.trim().length !== 0) return true;
+//   return false;
+// };
+// const isValid = function (value) {
+//     if (typeof value !== "string" && value.trim().length === 0) return false;
+//     return true;
+// };
 
 
-var validateUrl = function(url) {
-    // var re = /([a-z\-_0-9\/\:\.]*\.(?:png|jpg|jpeg|gif|png|svg))/
-    var re = /^https?:\/\/.*\/.*\.(png|gif|webp|jpeg|jpg)\??.*$/gmi
-    return re.test(url)
+var validateUrl = function (url) {
+  var re = /^https?:\/\/.*\/.*\.(png|jpeg|jpg)\??.*$/gim;
+  return re.test(url);
 };
-// (http)?s?:?(\/\/[^"']*\.(?:png|jpg|jpeg|gif|png|svg))
 
-const createCollege = async function(req,res){
-    try{
-        const collegeDetails = req.body;
-        if(!Object.keys(collegeDetails).length>0){return res.status(400).send({status:false, message:"required some data"})}
-        const{name, fullName, logoLink}=collegeDetails;
-        if(!logoLink){return res.status(400).send({status:false, message:"LogoLink required"})};
-        if(!validateUrl(logoLink)){return res.status(400).send({status:false, message:"Image url is not valid"}) }
-        
-        const findCollege=await collegeModel.findOne(name);
-       
-        if(!name){return res.status(400).send({status:false, message:"Name required"})}
-        if(!fullName){return res.status(400).send({status:false, message:"fullName required"})}
-        if(findCollege){
-            return res.status(400).send({status:false, message:"use different Name"})
-        }
-        if(findCollege){
-            return res.status(400).send({status:false, message:"use different Name"})
-        }
-        
-        const newCollege =await collegeModel.create(collegeDetails);
-        if(newCollege){
-            return res.status(201).send({status: true, data: newCollege})
-        }
-        
+const createCollege = async function (req, res) {
+  try {
+    const collegeDetails = req.body;
+    const data={}
+    if (!Object.keys(collegeDetails).length > 0) {
+      return res
+        .status(400)
+        .send({ status: false, message: "required some data" });
     }
-catch(err){
-    res.status(500).send({status: false, msg: err.message})
-}
-}
+    const { name, fullName, logoLink } = collegeDetails;
+
+    if (!logoLink.trim()) {
+      return res
+        .status(400)
+        .send({ status: false, message: "LogoLink required" });
+    }else{data.logoLink=logoLink.trim()
+    }
+    if (!validateUrl(logoLink)) {
+      return res
+        .status(400)
+        .send({ status: false, message: "Image url is not valid" });
+    }
+
+    if (!name.trim()) {
+      return res.status(400).send({ status: false, message: "Name required" });
+    }else{data.name=name.trim()
+    }
+
+    if (!fullName.trim()) {
+      return res
+        .status(400) 
+        .send({ status: false, message: "fullName required" });
+    }else{data.fullName=fullName.trim()
+    }
+
+    const findCollege = await collegeModel.findOne({name:data.name});
+
+    if (findCollege) {
+      return res
+        .status(400)
+        .send({ status: false, message: "use different Name" });
+    }
+
+    const newCollege = await collegeModel.create(data);
 
 
+      return res.status(201).send({ status: true, data: newCollege });
 
-module.exports.createCollege = createCollege
+  } catch (err) {
+    res.status(500).send({ status: false, msg: err.message });
+  }
+};
+
+module.exports.createCollege = createCollege;
