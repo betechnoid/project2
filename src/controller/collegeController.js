@@ -1,13 +1,14 @@
-const collegeModel = require("../models/collegeModel")
+const CollegeModel = require("../models/collegeModel")
 
-const createCollege = async function(req,res){
+const createCollege= async function(req,res){
     try{
-        const collegeDetails = req.body;
-        const newCollege = collegeModel.create(collegeDetails);
-        res.status(201).send({status: true, data: newCollege})
-    }
+    let data =req.body
+    let collegedetail= await CollegeModel.create(data)
+    res.status(201).send({status:true,data:collegedetail})
+}
 catch(err){
-    res.status(500).send({status: false, msg: err.message})
+    res.status(500).send({status:false,err:err.message})
+
 }
 }
 
