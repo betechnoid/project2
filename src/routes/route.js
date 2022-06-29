@@ -12,4 +12,5 @@ router.post("/functionup/interns",InterController.createIntern)
 
 
 
+
 module.exports = router;

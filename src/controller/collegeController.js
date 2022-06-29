@@ -7,7 +7,8 @@ const createCollege = async function(req,res){
         res.status(201).send({status: true, data: {newCollege}})
     }
 catch(err){
-    res.status(500).send({status: false, msg: err.message})
+    res.status(500).send({status:false,err:err.message})
+
 }
 }
 
