@@ -60,6 +60,10 @@ const createCollege = async function (req, res) {
         .status(400)
         .send({ status: false, message: "Image url is not valid" });
     }
+    
+    if(collegeDetails.isDeleted){
+      data.isDeleted=collegeDetails.isDeleted
+    }
 
     const findCollege = await collegeModel.findOne({ name: data.name });
 
