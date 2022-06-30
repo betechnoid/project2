@@ -30,13 +30,11 @@ const createIntern = async function (req, res) {
       });
     }
     if (!validName.test(name)) {
-      return res
-        .status(400)
-        .send({
-          status: false,
-          message:
-            "Please enter valid name without digits and special characters",
-        });
+      return res.status(400).send({
+        status: false,
+        message:
+          "Please enter valid name without digits and special characters",
+      });
     }
 
     filteredInternDetail.name = name.trim();
@@ -53,13 +51,11 @@ const createIntern = async function (req, res) {
       });
     }
     if (!validEmail.test(email)) {
-      return res
-        .status(400)
-        .send({
-          status: false,
-          message:
-            "Please enter valid name without digits and special characters",
-        });
+      return res.status(400).send({
+        status: false,
+        message:
+          "Please enter valid name without digits and special characters",
+      });
     }
     filteredInternDetail.email = email.trim();
     if (typeof mobile === "undefined" || mobile === null || !mobile) {
@@ -81,7 +77,11 @@ const createIntern = async function (req, res) {
     }
     filteredInternDetail.mobile = mobile.trim();
 
-    if (typeof collegeName === "undefined" || collegeName === null || !collegeName) {
+    if (
+      typeof collegeName === "undefined" ||
+      collegeName === null ||
+      !collegeName
+    ) {
       return res.status(400).send({
         status: false,
         message: "Please enter college name",

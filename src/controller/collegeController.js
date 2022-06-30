@@ -32,7 +32,7 @@ const createCollege = async function (req, res) {
     ) {
       return res.status(400).send({
         status: false,
-        message: "Name's type must be string",
+        message: "Please enter valid name",
       });
     }
     filteredCollegeDetail.name = name.trim().toLowerCase();
@@ -53,7 +53,7 @@ const createCollege = async function (req, res) {
       .filter((el) => el.trim().length !== 0)
       .join(" ");
 
-      if (typeof logoLink === "undefined" || logoLink === null || !logoLink) {
+    if (typeof logoLink === "undefined" || logoLink === null || !logoLink) {
       return res.status(400).send({
         status: false,
         message: "Please Enter Logo link ",
@@ -95,7 +95,7 @@ const createCollege = async function (req, res) {
 const getCollegeWithInterns = async function (req, res) {
   try {
     const collegeAbrv = req.query;
-    if (Object.keys(collegeAbrv).length === 0 || !collegeAbrv.name) {
+    if (Object.keys(collegeAbrv).length === 0 || !collegeAbrv.name.trim()) {
       return res
         .status(400)
         .send({ status: false, message: "Please select name" });
@@ -103,7 +103,10 @@ const getCollegeWithInterns = async function (req, res) {
     if (!validName.test(collegeAbrv.name)) {
       return res
         .status(400)
-        .send({ status: false, message: "Please select valid name" });
+        .send({
+          status: false,
+          message: "Please select valid name,cant have spaces",
+        });
     }
     const validCollegeAbbrviation = collegeAbrv["name"].trim().toLowerCase();
     //Fetching details of the college selected by query param
