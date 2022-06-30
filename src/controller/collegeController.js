@@ -18,7 +18,7 @@ const createCollege = async function (req, res) {
 
     let validName = /^[A-Za-z ]+$/;
 
-    if (!name || typeof name !== "string") {
+    if (!name|| typeof name !== "string"||name.trim().length===0) {
       return res
         .status(400)
         .send({
@@ -34,7 +34,7 @@ const createCollege = async function (req, res) {
         .send({ status: false, message: "Enter valid name" });
     }
 
-    if (!fullName || typeof fullName !== "string") {
+    if (!fullName || typeof fullName !== "string"||fullName.trim().length===0) {
       return res
         .status(400)
         .send({
@@ -45,7 +45,7 @@ const createCollege = async function (req, res) {
       data.fullName = fullName.trim();
     }
 
-    if (!logoLink || typeof logoLink !== "string") {
+    if (!logoLink || typeof logoLink !== "string"||logoLink.trim().length===0) {
       return res
         .status(400)
         .send({

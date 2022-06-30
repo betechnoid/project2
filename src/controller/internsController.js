@@ -13,7 +13,7 @@ const createIntern = async function (req, res) {
     }
     const data={}
 
-    const {name ,email ,mobile ,collegeId}=internDetail;
+    const {name ,email ,mobile }=internDetail;
 
     if (!name || typeof (name) !== "string") {
       return res.status(400).send({ status: false, message: "name is required and type must be string" });
