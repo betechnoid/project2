@@ -1,3 +1,4 @@
+const collegeModel = require("../models/collegeModel");
 const internModel = require("../models/internModel");
 
 const createIntern = async function (req, res) {
@@ -13,7 +14,7 @@ const createIntern = async function (req, res) {
     }
     const data={}
 
-    const {name ,email ,mobile ,collegeId}=internDetail;
+    const {name ,email ,mobile ,collegeName}=internDetail;
 
     if (!name || typeof (name) !== "string") {
       return res.status(400).send({ status: false, message: "name is required and type must be string" });
@@ -44,14 +45,16 @@ const createIntern = async function (req, res) {
     if(!validMobile.test(mobile)){
         return res.status(400).send({status:false,message:"valid mobile number"})
     }
-    if(internDetail.isDeleted){
-      data.isDeleted=internDetail.isDeleted
-    }
 
-    if(internDetail.collegeId){
-      data.collegeId=internDetail.collegeId
+    if(internDetail.collegeName){
+      // data.collegeName=internDetail.collegeName
+      const isCollegeExist = await collegeModel.findOne({name: internDetail.collegeName});
+  if(!isCollegeExist){
+    return res.status(404).send({status: false, message: "college not found"})
+  }
+  data.collegeId = isCollegeExist._id;
     }
-
+  
     const isEmailAlredayExist = await internModel.findOne({ email: email });
     if (isEmailAlredayExist) {
       return res
@@ -59,7 +62,7 @@ const createIntern = async function (req, res) {
         .send({ status: false, message: "email already registered" });
     }
 
-
+    
     const interndata = await internModel.create(data);
     return res.status(201).send({ status: true, data: interndata });
   } catch (err) {
