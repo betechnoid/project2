@@ -100,12 +100,12 @@ const getCollegeWithInterns = async function (req, res) {
         .status(400)
         .send({ status: false, message: "Please select name" });
     }
-    if (!validName.test(collegeAbrv.name)) {
+    if (!validName.test(collegeAbrv.name.trim())) {
       return res
         .status(400)
         .send({
           status: false,
-          message: "Please select valid name,cant have spaces",
+          message: "Please select valid name,cant have spaces inside name",
         });
     }
     const validCollegeAbbrviation = collegeAbrv["name"].trim().toLowerCase();
