@@ -1,5 +1,5 @@
 const collegeModel = require("../models/collegeModel");
-const internModel = require("../models/internModel")
+const internModel = require("../models/internModel");
 var validateUrl = function (url) {
   var validlogoUrlregex = /^https?:\/\/.*\/.*\.(png|jpeg|jpg)\??.*$/gim;
   return validlogoUrlregex.test(url);
@@ -16,53 +16,67 @@ const createCollege = async function (req, res) {
     }
     const { name, fullName, logoLink } = collegeDetails;
 
-    let validName = /^[A-Za-z ]+$/;
-
-    if (!name|| typeof name !== "string"||name.trim().length===0) {
-      return res
-        .status(400)
-        .send({
-          status: false,
-          message: "Name required and  type must be string",
-        });
-    } else {
-      data.name = name.trim();
+    let validName = /^[A-Za-z]+$/;
+    //let validName = /^[A-Z]\'?[- a-zA-Z]( [a-zA-Z])*$/
+    if (typeof name === undefined || name === null) {
+      return res.status(400).send({
+        status: false,
+        message: "Please Enter name",
+      });
     }
-    if (!validName.test(name)) {
-      return res
-        .status(400)
-        .send({ status: false, message: "Enter valid name" });
+    if (!name) {
+      return res.status(400).send({
+        status: false,
+        message: "Please Enter name",
+      });
     }
-
-    if (!fullName || typeof fullName !== "string"||fullName.trim().length===0) {
-      return res
-        .status(400)
-        .send({
-          status: false,
-          message: "fullName required and type must be string",
-        });
-    } else {
-      data.fullName = fullName.trim();
+    if (
+      typeof name !== "string" ||
+      name.trim().length === 0 ||
+      !validName.test(name)
+    ) {
+      return res.status(400).send({
+        status: false,
+        message: "Please enter valid name",
+      });
     }
+    data.name = name.trim().toLowerCase();
 
-    if (!logoLink || typeof logoLink !== "string"||logoLink.trim().length===0) {
-      return res
-        .status(400)
-        .send({
-          status: false,
-          message: "LogoLink required and type must be string",
-        });
-    } else {
-      data.logoLink = logoLink.trim();
+    if (!fullName) {
+      return res.status(400).send({
+        status: false,
+        message: "Please Enter fullName",
+      });
+    }
+    if (typeof fullName !== "string" || fullName.trim().length === 0) {
+      return res.status(400).send({
+        status: false,
+        message: "Please enter valid name",
+      });
+    }
+    data.fullName = fullName.trim();
+
+    if (!logoLink) {
+      return res.status(400).send({
+        status: false,
+        message: "Please Enter Logo link ",
+      });
+    }
+    if (typeof logoLink !== "string" || logoLink.trim().length === 0) {
+      return res.status(400).send({
+        status: false,
+        message: "Type must be string",
+      });
     }
     if (!validateUrl(logoLink)) {
       return res
         .status(400)
         .send({ status: false, message: "Image url is not valid" });
     }
-    
-    if(collegeDetails.isDeleted){
-      data.isDeleted=collegeDetails.isDeleted
+    data.logoLink = logoLink.trim();
+
+    if (collegeDetails.isDeleted) {
+      data.isDeleted = collegeDetails.isDeleted;
     }
 
     const findCollege = await collegeModel.findOne({ name: data.name });
@@ -90,7 +104,7 @@ const getCollegeWithInterns = async function (req, res) {
     }
     const validCollegeAbbrviation = collegeAbrv["name"].trim();
     const college = await collegeModel
-      .findOne({$and: [{ name: validCollegeAbbrviation, isDeleted: false }]})
+      .findOne({ $and: [{ name: validCollegeAbbrviation, isDeleted: false }] })
       .select({ name: 1, fullName: 1, logoLink: 1 });
     console.log(college);
     if (!college) {
