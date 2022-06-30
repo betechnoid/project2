@@ -4,7 +4,7 @@ var validateUrl = function (url) {
   var validlogoUrlregex = /^https?:\/\/.*\/.*\.(png|jpeg|jpg)\??.*$/gim;
   return validlogoUrlregex.test(url);
 };
-
+let validName = /^[A-Za-z]+$/;
 const createCollege = async function (req, res) {
   try {
     const collegeDetails = req.body;
@@ -15,8 +15,6 @@ const createCollege = async function (req, res) {
         .send({ status: false, message: "required some data" });
     }
     const { name, fullName, logoLink } = collegeDetails;
-
-    let validName = /^[A-Za-z]+$/;
     //let validName = /^[A-Z]\'?[- a-zA-Z]( [a-zA-Z])*$/
     if (typeof name === undefined || name === null) {
       return res.status(400).send({
@@ -102,11 +100,15 @@ const getCollegeWithInterns = async function (req, res) {
         .status(400)
         .send({ status: false, message: "Please select name" });
     }
+    if(!validName.test(collegeAbrv)){
+      return res
+        .status(400)
+        .send({ status: false, message: "Please select valid name" });
+    }
     const validCollegeAbbrviation = collegeAbrv["name"].trim();
     const college = await collegeModel
-      .findOne({ $and: [{ name: validCollegeAbbrviation, isDeleted: false }] })
+      .findOne({ name: validCollegeAbbrviation, isDeleted: false})
       .select({ name: 1, fullName: 1, logoLink: 1 });
-    console.log(college);
     if (!college) {
       return res
         .status(404)
