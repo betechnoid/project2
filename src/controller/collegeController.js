@@ -1,8 +1,8 @@
 const collegeModel = require("../models/collegeModel");
 const internModel = require("../models/internModel")
 var validateUrl = function (url) {
-  var re = /^https?:\/\/.*\/.*\.(png|jpeg|jpg)\??.*$/gim;
-  return re.test(url);
+  var validlogoUrlregex = /^https?:\/\/.*\/.*\.(png|jpeg|jpg)\??.*$/gim;
+  return validlogoUrlregex.test(url);
 };
 
 const createCollege = async function (req, res) {
