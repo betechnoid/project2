@@ -99,7 +99,7 @@ const getCollegeWithInterns = async function (req, res) {
         .send({ status: false, message: "College not found" });
     }
     const interns = await internModel
-      .find({ collegeId: college._id })
+      .find({ collegeId: college._id, isDeleted: false })
       .select({ _id: 1, name: 1, email: 1, mobile: 1 });
 
     if (interns.length === 0) {

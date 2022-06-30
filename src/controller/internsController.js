@@ -6,19 +6,26 @@ const createIntern = async function (req, res) {
     const internDetail = req.body;
     const validEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     const validName = /^[A-Za-z ]+$/;
-    const validMobile=/^[0-9]{10}$/
+    const validMobile = /^[0-9]{10}$/;
     if (Object.keys(internDetail).length === 0) {
       return res
         .status(400)
         .send({ status: false, message: "Please provide intern details" });
     }
-    const data={}
+    const data = {};
 
-    const {name ,email ,mobile ,collegeName}=internDetail;
+    const { name, email, mobile, collegeName } = internDetail;
 
-    if (!name || typeof (name) !== "string") {
-      return res.status(400).send({ status: false, message: "name is required and type must be string" });
-    }else{data.name=name.trim()}
+    if (!name || typeof name !== "string") {
+      return res
+        .status(400)
+        .send({
+          status: false,
+          message: "name is required and type must be string",
+        });
+    } else {
+      data.name = name.trim();
+    }
 
     if (!validName.test(name)) {
       return res
@@ -26,9 +33,16 @@ const createIntern = async function (req, res) {
         .send({ status: false, message: "Please enter valid name " });
     }
 
-    if (!email||typeof (email)!=="string") {
-      return res.status(400).send({ status: false, message: "email is required and type must be string" });
-    }else{data.email=email.trim()}
+    if (!email || typeof email !== "string") {
+      return res
+        .status(400)
+        .send({
+          status: false,
+          message: "email is required and type must be string",
+        });
+    } else {
+      data.email = email.trim();
+    }
 
     if (!validEmail.test(email)) {
       return res
@@ -36,25 +50,35 @@ const createIntern = async function (req, res) {
         .send({ status: false, message: "enter valid email id" });
     }
 
-    if (!mobile||typeof (mobile)!=="string") {
+    if (!mobile || typeof mobile !== "string") {
       return res
         .status(400)
-        .send({ status: false, message: "mobile number is required and type must be string" });
-    }else{data.mobile=mobile.trim()}
- 
-    if(!validMobile.test(mobile)){
-        return res.status(400).send({status:false,message:"valid mobile number"})
+        .send({
+          status: false,
+          message: "mobile number is required and type must be string",
+        });
+    } else {
+      data.mobile = mobile.trim();
     }
 
-    if(internDetail.collegeName){
-      // data.collegeName=internDetail.collegeName
-      const isCollegeExist = await collegeModel.findOne({name: internDetail.collegeName});
-  if(!isCollegeExist){
-    return res.status(404).send({status: false, message: "college not found"})
-  }
-  data.collegeId = isCollegeExist._id;
+    if (!validMobile.test(mobile)) {
+      return res
+        .status(400)
+        .send({ status: false, message: "valid mobile number" });
     }
-  
+
+    if (collegeName) {
+      const isCollegeExist = await collegeModel.findOne({
+       $and: [{name: collegeName, isDeleted: false}]
+      });
+      if (!isCollegeExist) {
+        return res
+          .status(400)
+          .send({ status: false, message: "college not found" });
+      }
+      data.collegeId = isCollegeExist._id;
+    }
+
     const isEmailAlredayExist = await internModel.findOne({ email: email });
     if (isEmailAlredayExist) {
       return res
@@ -62,7 +86,6 @@ const createIntern = async function (req, res) {
         .send({ status: false, message: "email already registered" });
     }
 
-    
     const interndata = await internModel.create(data);
     return res.status(201).send({ status: true, data: interndata });
   } catch (err) {
