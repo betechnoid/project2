@@ -16,12 +16,14 @@ const createCollege = async function (req, res) {
         .send({ status: false, message: "required some data" });
     }
     const { name, fullName, logoLink } = collegeDetails;
-    if (typeof name === undefined || name === null) {
+    console.log(name);
+    if (typeof name === "undefined" || name === null) {
       return res.status(400).send({
         status: false,
         message: "Please Enter name",
       });
     }
+    console.log(name);
     if (!name) {
       return res.status(400).send({
         status: false,
@@ -52,7 +54,10 @@ const createCollege = async function (req, res) {
         message: "Please enter valid name",
       });
     }
-    filteredCollegeDetail.fullName = fullName.trim();
+    filteredCollegeDetail.fullName = fullName
+      .split(" ")
+      .filter((el) => el.trim().length !== 0)
+      .join(" ");
 
     if (!logoLink) {
       return res.status(400).send({
@@ -77,7 +82,9 @@ const createCollege = async function (req, res) {
       filteredCollegeDetail.isDeleted = collegeDetails.isDeleted;
     }
     //Checking if college already exist
-    const findCollege = await collegeModel.findOne({ name: filteredCollegeDetail.name });
+    const findCollege = await collegeModel.findOne({
+      name: filteredCollegeDetail.name,
+    });
     if (findCollege) {
       return res
         .status(400)

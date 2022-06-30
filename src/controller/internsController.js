@@ -23,7 +23,7 @@ const createIntern = async function (req, res) {
         message: "Please enter name",
       });
     }
-    if(typeof name !== "string" || name.trim().length === 0){
+    if (typeof name !== "string" || name.trim().length === 0) {
       return res.status(400).send({
         status: false,
         message: "Type must be string",
@@ -32,9 +32,13 @@ const createIntern = async function (req, res) {
     if (!validName.test(name)) {
       return res
         .status(400)
-        .send({ status: false, message: "Please enter valid name without digits and special characters" });
+        .send({
+          status: false,
+          message:
+            "Please enter valid name without digits and special characters",
+        });
     }
-    
+
     filteredInternDetail.name = name.trim();
     if (!email) {
       return res.status(400).send({
@@ -42,7 +46,7 @@ const createIntern = async function (req, res) {
         message: "Please enter name",
       });
     }
-    if(typeof email !== "string" || email.trim().length === 0){
+    if (typeof email !== "string" || email.trim().length === 0) {
       return res.status(400).send({
         status: false,
         message: "Type must be string",
@@ -51,7 +55,11 @@ const createIntern = async function (req, res) {
     if (!validEmail.test(email)) {
       return res
         .status(400)
-        .send({ status: false, message: "Please enter valid name without digits and special characters" });
+        .send({
+          status: false,
+          message:
+            "Please enter valid name without digits and special characters",
+        });
     }
     filteredInternDetail.email = email.trim();
     if (!mobile) {
@@ -60,7 +68,7 @@ const createIntern = async function (req, res) {
         message: "Please enter mobile number",
       });
     }
-    if(typeof mobile !== "string" || mobile.trim().length === 0){
+    if (typeof mobile !== "string" || mobile.trim().length === 0) {
       return res.status(400).send({
         status: false,
         message: "Please Enter valid mobile no",
@@ -73,22 +81,18 @@ const createIntern = async function (req, res) {
     }
     filteredInternDetail.mobile = mobile.trim();
 
-    if (
-      !collegeName
-    ) {
+    if (!collegeName) {
       return res.status(400).send({
         status: false,
         message: "Please enter college name",
       });
     }
-    if(
-      typeof collegeName !== "string" ||
-      collegeName.trim().length === 0){
-        return res.status(400).send({
-          status: false,
-          message: "Type must be string",
-        });
-      }
+    if (typeof collegeName !== "string" || collegeName.trim().length === 0) {
+      return res.status(400).send({
+        status: false,
+        message: "Type must be string",
+      });
+    }
     if (!validName.test(collegeName)) {
       return res.status(400).send({
         status: false,
