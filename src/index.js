@@ -5,11 +5,11 @@ const { default: mongoose } = require("mongoose");
 const app = express();
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+
 
 mongoose
   .connect(
-    "mongodb+srv://aditisah:HdtoVDUgrpCUNRmS@cluster0.jjd4zhp.mongodb.net/group2Database?retryWrites=true&w=majority",
+    "mongodb+srv://betechnoid:Abhishek8285366507@cluster0.ctbkbk3.mongodb.net/opentointern?retryWrites=true&w=majority",
     {
       useNewUrlParser: true,
     }

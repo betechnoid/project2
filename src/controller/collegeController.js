@@ -18,7 +18,7 @@ const createCollege = async function (req, res) {
         .send({ status: false, message: "required some data" });
     }
     const { name, fullName, logoLink } = collegeDetails;
-    console.log(name);
+
     if (typeof name === "undefined" || name === null || !name) {
       return res.status(400).send({
         status: false,
@@ -95,12 +95,12 @@ const createCollege = async function (req, res) {
 const getCollegeWithInterns = async function (req, res) {
   try {
     const collegeAbrv = req.query;
-    if (Object.keys(collegeAbrv).length === 0 || !collegeAbrv.name.trim()) {
+    if (Object.keys(collegeAbrv).length === 0 || !collegeAbrv.collegeName.trim()) {
       return res
         .status(400)
-        .send({ status: false, message: "Please select name" });
+        .send({ status: false, message: "Please select collegName" });
     }
-    if (!validName.test(collegeAbrv.name.trim())) {
+    if (!validName.test(collegeAbrv.collegeName.trim())) {
       return res
         .status(400)
         .send({
@@ -108,7 +108,7 @@ const getCollegeWithInterns = async function (req, res) {
           message: "Please select valid name,cant have spaces inside name",
         });
     }
-    const validCollegeAbbrviation = collegeAbrv["name"].trim().toLowerCase();
+    const validCollegeAbbrviation = collegeAbrv["collegeName"].trim().toLowerCase();
     //Fetching details of the college selected by query param
     const college = await collegeModel
       .findOne({ name: validCollegeAbbrviation, isDeleted: false })
