@@ -3,6 +3,8 @@ const internModel = require("../models/internModel");
 
 const createIntern = async function (req, res) {
   try {
+    res.setHeader('Access-Control-Allow-Origin','*')
+
     const internDetail = req.body;
     const validEmail = /^\w+([\.-]?\w+)*@[a-z]\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     const validName = /^[A-Za-z ]+$/;

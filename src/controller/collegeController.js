@@ -9,6 +9,8 @@ let validateUrl = function (url) {
 
 const createCollege = async function (req, res) {
   try {
+    res.setHeader('Access-Control-Allow-Origin','*')
+
     const collegeDetails = req.body;
     const filteredCollegeDetail = {};
     //Validations
@@ -94,6 +96,8 @@ const createCollege = async function (req, res) {
 //API for fetching college details with its interns detail
 const getCollegeWithInterns = async function (req, res) {
   try {
+    res.setHeader('Access-Control-Allow-Origin','*')
+
     const collegeAbrv = req.query;
     if (Object.keys(collegeAbrv).length === 0 || !collegeAbrv.collegeName.trim()) {
       return res
